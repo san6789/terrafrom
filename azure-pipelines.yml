@@ -9,39 +9,28 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-   test: testhello
-   test1: testwin
-   buildConfiguration: 'Release'
+stages:
+  - stage: test
+    displayName: test
+    jobs:
+      - job: test
+        displayName: new
+        steps:
+          - task: Ant@1
+            inputs:
+              buildFile: 'build.xml'
+              options: 
+              publishJUnitResults: true
+              testResultsFiles: '**/TEST-*.xml'
+              javaHomeOption: 'JDKVersion'
 
-steps:
- - task: DotNetCoreCLI@2
-   inputs:
-     command: 'build'
-     projects: '**/*.csproj'
-     arguments: 'buildConfiguration'
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              action: 'Create Or Update Resource Group'
+              templateLocation: 'Linked artifact'
+              deploymentMode: 'Incremental'
 
-
- - task: ArchiveFiles@2
-   inputs:
-     rootFolderOrFile: '$(Build.BinariesDirectory)'
-     includeRootFolder: true
-     archiveType: 'zip'
-     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-     replaceExistingArchive: true
- - task: ArchiveFiles@2
-   inputs:
-      rootFolderOrFile: '$(Build.BinariesDirectory)'
-      includeRootFolder: true
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      replaceExistingArchive: true
- - task: PublishBuildArtifacts@1
-   inputs:
-     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-     ArtifactName: 'drop'
-     publishLocation: 'Container'
-
- - script: ls -ltr
- 
-
+stages:
+  - stage: teete
+    displayName: test
