@@ -31,6 +31,10 @@ stages:
               templateLocation: 'Linked artifact'
               deploymentMode: 'Incremental'
 
-stages:
-  - stage: teete
-    displayName: test
+  - stage: new
+    displayName: yss
+    jobs:
+      - job: yewsy
+        displayName: fne
+        steps:
+          - script: "ehello"
