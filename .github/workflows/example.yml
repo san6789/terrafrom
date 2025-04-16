@@ -10,9 +10,3 @@ jobs:
           run: |
             echo " this is sample file"
         
-        - name: checkout repo
-          uses: checkout
-          with:
-            repository: san6789/helm
-        
-            
